@@ -20,12 +20,12 @@ RUN mkdir -p /javafx-sdk \
     && mv /javafx-sdk/javafx-sdk-21.0.2/lib /javafx-sdk/lib \
     && rm -rf /javafx-sdk/javafx-sdk-21.0.2 javafx.zip
 
-COPY target/notesApp.jar app.jar
+COPY target/SoftwareEngineeringProject2_Week2-1.0-SNAPSHOT.jar app.jar
 
 ENV DISPLAY=host.docker.internal:0.0
 ENV DB_HOST=host.docker.internal
 ENV JAVA_TOOL_OPTIONS="-Dprism.order=sw"
 
-CMD ["java", "--module-path", "/javafx-sdk/lib", "--add-modules", "javafx.controls,javafx.fxml", "-jar", "SoftwareEngineeringProject2_Week2-1.0-SNAPSHOT.jar"]
+CMD ["java", "--module-path", "/javafx-sdk/lib", "--add-modules", "javafx.controls,javafx.fxml", "-jar", "app.jar"]
 
 
