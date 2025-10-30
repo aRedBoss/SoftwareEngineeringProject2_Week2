@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.softwareengineeringproject2_week2.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label fx:id="lblWeight"/>
+    <TextField fx:id="tfWeight"/>
+    <Label fx:id="lblHeight"/>
+    <TextField fx:id="tfHeight"/>
+    <Label fx:id="lblResult"/>
+
+    <Button fx:id="btnCalculate" text="Calculate" onAction="#onCalculate"/>
+
+    <Label fx:id="lblLocalTime"/>
+
+    <Button text="EN!" onAction="#onEnClick"/>
+    <Button text="FR!" onAction="#onFRClick"/>
+    <Button text="UR!" onAction="#onURClick"/>
+    <Button text="VI!" onAction="#onVIClick"/>
+</VBox>
