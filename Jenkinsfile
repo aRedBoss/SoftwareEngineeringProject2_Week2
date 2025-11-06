@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('checking') {
             steps {
-                git branch: 'main', url: 'https://github.com/aRedBoss/SoftwareEngineeringProject2_Week3.git'
+                git branch: 'main', url: 'https://github.com/aRedBoss/SoftwareEngineeringProject2_Week2.git'
             }
         }
 
