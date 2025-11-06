@@ -7,9 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.Map;
 
 public class HelloController {
+
     @FXML
     private Label lblWeight;
     @FXML
@@ -20,74 +21,74 @@ public class HelloController {
     private TextField tfHeight;
     @FXML
     private Label lblResult;
-
     @FXML
     private Button btnCalculate;
 
-    @FXML
     private Double BMI = 0.0;
-
     private Boolean validInput = true;
+    private Map<String, String> localizedStrings;
+    private Locale currentLocale = Locale.getDefault();
 
-    private ResourceBundle rb;
+    private void setLanguage(Locale locale) {
+        lblResult.setText("");
+        currentLocale = locale;
+        Locale.setDefault(locale);
 
-/*    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }*/
+        localizedStrings = LocalizationService.getLocalizedStrings(locale);
 
-    public void initialize() {
-        onLoadLanguage("en", "US");
+        lblWeight.setText(localizedStrings.getOrDefault("weight", "Weight (kg)"));
+        lblHeight.setText(localizedStrings.getOrDefault("height", "Height (cm)"));
+        btnCalculate.setText(localizedStrings.getOrDefault("calculate", "Calculate BMI"));
     }
 
-    public void onLoadLanguage(String language, String country) {
-        Locale myLocale = new Locale(language, country);
-        rb = ResourceBundle.getBundle("MessagesBundle", myLocale);
-        lblWeight.setText(rb.getString("lblWeight.text"));
-        lblHeight.setText(rb.getString("lblHeight.text"));
-    }
     private void updateResultLabel() {
         if (!validInput) {
-            lblResult.setText(rb.getString("lblInvalidInput.text"));
+            lblResult.setText(localizedStrings.getOrDefault("invalid", "Invalid input!"));
         } else if (BMI == 0.0) {
-            lblResult.setText(rb.getString("lblResult.text"));
+            lblResult.setText(localizedStrings.getOrDefault("result", "Your BMI is:"));
         } else {
-            lblResult.setText(rb.getString("lblResult.text") + " " + String.format("%.2f", BMI));
+            lblResult.setText(localizedStrings.getOrDefault("result", "Your BMI is:") + " " + String.format("%.2f", BMI));
         }
     }
 
     public void onEnClick(ActionEvent actionEvent) {
-        onLoadLanguage("en", "US");
-        updateResultLabel();
+        setLanguage(new Locale("en", "US"));
     }
 
     public void onFRClick(ActionEvent actionEvent) {
-        onLoadLanguage("fr", "FR");
-        updateResultLabel();
+        setLanguage(new Locale("fr", "FR"));
     }
 
     public void onURClick(ActionEvent actionEvent) {
-        onLoadLanguage("ur", "PK");
-        updateResultLabel();
+        setLanguage(new Locale("ur", "PK"));
     }
 
     public void onVIClick(ActionEvent actionEvent) {
-        onLoadLanguage("vi", "VI");
-        updateResultLabel();
+        setLanguage(new Locale("vi", "VI"));
     }
 
     public void onCalculate(ActionEvent actionEvent) {
         try {
             Double weight = Double.parseDouble(tfWeight.getText());
             Double height = Double.parseDouble(tfHeight.getText());
-            height = height/100;
-            BMI = weight/(height*height);
-            lblResult.setText(rb.getString("lblResult.text") + " " + String.format("%.2f", BMI));
+            height = height / 100;
+            BMI = weight / (height * height);
             validInput = true;
+
+            lblResult.setText(localizedStrings.getOrDefault("result", "Your BMI is:") + " " + String.format("%.2f", BMI));
+
+            String language = currentLocale.getLanguage();
+            BMIResultService.saveResult(weight, height * 100, BMI, language);
+
         } catch (NumberFormatException e) {
             validInput = false;
-            lblResult.setText(rb.getString("lblInvalidInput.text"));
+            lblResult.setText(localizedStrings.getOrDefault("invalid", "Invalid input!"));
         }
         updateResultLabel();
+    }
+
+    @FXML
+    public void initialize() {
+        setLanguage(currentLocale);
     }
 }
